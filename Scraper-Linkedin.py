@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 
 import requests
@@ -24,7 +24,7 @@ import os
 
 # # Opcion scrapear Google
 
-# In[3]:
+# In[2]:
 
 
 def get_source(url):
@@ -46,7 +46,7 @@ def get_source(url):
         print(e)
 
 
-# In[4]:
+# In[6]:
 
 
 #función que se le pasa los parámetros de búsqueda para Google y la cantidad de hojas a scrapear
@@ -72,7 +72,10 @@ def scrape_google(query,pages):
                           'https://ar.linkedin.com/jobs',
                           'https://ar.linkedin.com/company',
                           'https://ar.linkedin.com/posts'
-                          'https://translate.google.com.ar'
+                          'https://translate.google.com.ar',
+                          'https://www.linkedin.com/posts',
+                          'https://www.linkedin.com/pub',
+                          'https://translate'
                          )
         links = links + links_one_page
         
@@ -81,38 +84,36 @@ def scrape_google(query,pages):
     for url in links[:]:
         if url.startswith(google_domains):
             links.remove(url)
-        if 'linkedin' not in link:
-            links.remove(link)
+        #if 'linkedin' not in url:
+        #    links.remove(url)
 
     return links
-
-# /translate?hl=es-419&sl=pt&u=https://ar.linkedin.com/in/nogueirajuansebastian/pt&prev=search&pto=aue
 
 
 # ## Llamar a las funciones para obtener las URL
 
-# In[4]:
+# In[9]:
 
 
 #Scrapear Google para obtener URLs de Linkedin de las personas de beneficios y compensaciones 
 #y directores de recursos humanos de las empresas
 
-URLs_byc = scrape_google("Argentina AND Beneficios y compensaciones AND site:linkedin.com AND -empleos AND -company AND -evento AND -busqueda AND -jr AND -intern AND -pasante",40)
-URLs_rrhh = scrape_google("Argentina AND Recursos Humanos AND site:linkedin.com AND -empleos AND -company AND -evento AND -busqueda AND -jr AND -intern AND -pasante",40)
+URLs_byc = scrape_google("Argentina AND Beneficios y compensaciones AND site:linkedin.com AND -empleos AND -company AND -evento AND -busqueda AND -jr AND -intern AND -pasante",30)
+URLs_rrhh = scrape_google("Argentina AND Recursos Humanos AND site:linkedin.com AND -empleos AND -company AND -evento AND -busqueda AND -jr AND -intern AND -pasante",30)
 URLs = URLs_byc + URLs_rrhh
 
 
-# In[5]:
+# In[10]:
 
 
-#URLs
+URLs
 
 
 # # Tratamiento y limpieza de datos
 
 # ### Función para modificar las tildes
 
-# In[8]:
+# In[11]:
 
 
 def normalize(s):
@@ -136,7 +137,7 @@ def normalize(s):
 
 # ## Modificar los url para no buscar duplicados, ni paginas que no nos sirven
 
-# In[1]:
+# In[12]:
 
 
 #Elimino duplicados
@@ -144,15 +145,15 @@ URLs = list(set(URLs))
 #URLs
 
 
-# In[ ]:
+# In[29]:
 
 
-
+URLs
 
 
 # # Obtencion de datos a df
 
-# In[10]:
+# In[13]:
 
 
 # Crear una instancia del controlador del navegador
@@ -198,7 +199,7 @@ df
 
 # # Manipular y expandir datos
 
-# In[11]:
+# In[16]:
 
 
 #Cambiar tildes
@@ -220,16 +221,24 @@ df = df[~df['Name'].str.contains("Iniciar sesión")]
 df = df.drop(columns=['first_dash', 'last_dash','Title'])
 
 
-# In[6]:
+# In[17]:
 
 
 df
 
 
-# In[ ]:
+# In[28]:
 
 
+df1 = df[~df['Name'].str.contains("niciar sesi")]
+df1 = df[~df['Job'].str.contains("niciar sesi")]
+df1 = df[~df['Empresa'].str.contains("niciar sesi")]
 
+
+df1 = df[~df['URL'].str.contains("post")]
+
+df1 = df1.reset_index(drop=True)
+df1
 
 
 # # Exportar datos a un Excel
@@ -290,7 +299,7 @@ with open("URLs.txt", "w") as archivo:
 # driver = webdriver.Chrome()
 # 
 # email = "pablitogomez19234@gmail.com"
-# password = "pedidos123"
+# password = ""
 # actions.login(driver, email, password) # if email and password isnt given, it'll prompt in terminal
 # person = Person(URLs[0], driver=driver)
 
