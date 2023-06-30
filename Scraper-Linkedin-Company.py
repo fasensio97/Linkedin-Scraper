@@ -31,7 +31,7 @@ import os
 driver = webdriver.Chrome()
 driver.get('https://www.linkedin.com/login')
 driver.find_element(By.ID, 'username').send_keys('pablitogomez19234@gmail.com') #Enter username of linkedin account here
-driver.find_element(By.ID,'password').send_keys('pedidos123')  #Enter Password of linkedin account here
+driver.find_element(By.ID,'password').send_keys('')  #Enter Password of linkedin account here
 driver.find_element(By.XPATH,"//*[@type='submit']").click()
 
             
