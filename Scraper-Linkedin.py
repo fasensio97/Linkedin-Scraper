@@ -292,19 +292,6 @@ with open("URLs.txt", "w") as archivo:
 
 
 
-# # Prueba de obtener mediante una libreria
-
-# from linkedin_scraper import Person, actions
-# from selenium import webdriver
-# driver = webdriver.Chrome()
-# 
-# email = "pablitogomez19234@gmail.com"
-# password = ""
-# actions.login(driver, email, password) # if email and password isnt given, it'll prompt in terminal
-# person = Person(URLs[0], driver=driver)
-
-# In[ ]:
-
 
 
 
