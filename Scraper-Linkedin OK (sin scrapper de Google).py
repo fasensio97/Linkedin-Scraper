@@ -311,7 +311,6 @@ empresas
 # In[13]:
 
 
-empresas = ['Pedidos Ya','Techint', 'Meta','Volkswagen']
 
 
 # ### Ingreso a Linkedin
